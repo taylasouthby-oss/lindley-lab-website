@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Lindley Lab — Playroom</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,340;9..144,400;9..144,500&family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --black:#000000;
+    --cream:#F8EFE5;
+    --cream-dim:rgba(248,239,229,.55);
+    --cream-faint:rgba(248,239,229,.18);
+    --cream-grid:rgba(248,239,229,.08);
+    --lime:#C6FF34;
+    --serif: "Fraunces", "Times New Roman", serif;
+    --mono: "JetBrains Mono", ui-monospace, monospace;
+    --sans: "Inter", -apple-system, sans-serif;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--black);
+    color:var(--cream);
+    font-family:var(--sans);
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{ background:var(--lime); color:var(--black); }
+  a{ color:inherit; }
+  button{ font-family:inherit; cursor:pointer; }
+
+  .mono-label{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:.08em;
+    color:var(--cream-dim);
+  }
+
+  /* ---- Back to Lab ---- */
+  .back-nav{
+    position:sticky;
+    top:0;
+    z-index:20;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:20px clamp(20px,4vw,48px);
+    background:var(--black);
+    text-decoration:none;
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:.1em;
+    color:var(--cream);
+    border-bottom:1px solid var(--cream-faint);
+    width:fit-content;
+  }
+  .back-nav .arrow{ color:var(--lime); }
+  .back-nav:hover{ color:var(--lime); }
+  .back-nav:focus-visible{ outline:1px dashed var(--lime); outline-offset:4px; }
+
+  /* ---- Playroom header ---- */
+  .playroom-header{
+    padding:clamp(50px,9vw,90px) clamp(20px,6vw,64px) clamp(40px,6vw,56px);
+  }
+  .playroom-header h1{
+    margin:8px 0 0;
+    font-family:var(--serif);
+    font-weight:400;
+    font-size:clamp(44px,9vw,120px);
+    line-height:.92;
+  }
+  .playroom-header p{
+    margin:20px 0 0;
+    max-width:480px;
+    font-size:15px;
+    line-height:1.6;
+    color:var(--cream-dim);
+  }
+
+  /* ---- Playground (moved from index.html) ---- */
+  .playground{
+    position:relative;
+    background:var(--black);
+    padding:0 clamp(20px,6vw,64px) clamp(80px,10vw,110px);
+    overflow:hidden;
+  }
+  .pg-bg-grid{
+    position:absolute; inset:0; pointer-events:none;
+    background-image:
+      linear-gradient(var(--cream-grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--cream-grid) 1px, transparent 1px);
+    background-size:40px 40px;
+    mask-image:linear-gradient(to bottom, transparent, black 8%, black 92%, transparent);
+  }
+  .pg-foot-label{
+    position:relative;
+    margin-bottom:clamp(24px,4vw,36px);
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:.08em;
+    color:var(--cream-dim);
+  }
+  .pg-grid{
+    position:relative;
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(230px,1fr));
+    border-top:1px solid var(--cream-faint);
+    border-left:1px solid var(--cream-faint);
+  }
+  .pg-cell{
+    position:relative;
+    min-height:260px;
+    border-right:1px solid var(--cream-faint);
+    border-bottom:1px solid var(--cream-faint);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:visible;
+  }
+  .pg-cell .cell-label{
+    position:absolute;
+    left:16px; top:14px;
+    font-family:var(--mono);
+    font-size:10px;
+    letter-spacing:.08em;
+    color:var(--cream-dim);
+    z-index:2;
+  }
+  .pg-object{
+    font-size:clamp(58px,7vw,120px);
+    line-height:1;
+    user-select:none;
+    -webkit-user-select:none;
+    touch-action:none;
+    cursor:grab;
+    transition:filter .25s ease;
+  }
+  .pg-object.grabbed{ cursor:grabbing; }
+  .spark-object{
+    width:clamp(64px,9vw,120px);
+    height:auto;
+    display:block;
+    -webkit-user-drag:none;
+    pointer-events:auto;
+  }
+  .spark-object.grabbed{
+    filter:drop-shadow(0 0 8px rgba(198,255,52,.6));
+  }
+
+  .pg-coord-dot{
+    width:14px; height:14px;
+    border-radius:50%;
+    border:1.5px solid var(--cream);
+    cursor:grab;
+    touch-action:none;
+  }
+  .pg-coord-dot.grabbed{ border-color:var(--lime); }
+  .pg-coord-readout{
+    position:absolute;
+    bottom:14px; left:16px;
+    font-family:var(--mono);
+    font-size:10px;
+    color:var(--cream-dim);
+  }
+
+  /* ---- Tension / 02 — elastic pull-and-release ---- */
+  .tension-wrap{
+    position:relative;
+    width:100%;
+    height:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    touch-action:none;
+  }
+  .tension-anchor{
+    position:absolute;
+    width:12px; height:12px;
+    border:1.5px solid var(--cream-faint);
+    border-radius:50%;
+    pointer-events:none;
+  }
+  .tension-line{
+    position:absolute;
+    left:50%; top:50%;
+    height:1px;
+    width:0;
+    background:var(--cream-faint);
+    transform-origin:0 50%;
+    pointer-events:none;
+  }
+  .tension-object{
+    position:relative;
+    width:20px; height:20px;
+    border-radius:50%;
+    background:var(--cream);
+    cursor:grab;
+    touch-action:none;
+    box-shadow:0 0 0 rgba(198,255,52,0);
+    transition:box-shadow .2s ease;
+  }
+  .tension-object.grabbed{
+    cursor:grabbing;
+    background:var(--lime);
+    box-shadow:0 0 14px rgba(198,255,52,.55);
+  }
+
+  .type-field-wrap{
+    width:100%;
+    padding:0 22px;
+    text-align:center;
+  }
+  .type-input{
+    width:100%;
+    background:transparent;
+    border:none;
+    border-bottom:1px solid var(--cream-faint);
+    color:var(--cream);
+    font-family:var(--mono);
+    font-size:13px;
+    letter-spacing:.1em;
+    padding:8px 4px;
+    text-align:center;
+    outline:none;
+  }
+  .type-input::placeholder{ color:var(--cream-dim); }
+  .type-preview{
+    margin-top:18px;
+    min-height:52px;
+    font-family:var(--serif);
+    font-size:clamp(22px,3.4vw,40px);
+    word-break:break-word;
+  }
+
+  .slider-wrap{
+    width:100%;
+    padding:0 26px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:18px;
+  }
+  .slider-shape{
+    width:0; height:0;
+    border-left:34px solid transparent;
+    border-right:34px solid transparent;
+    border-bottom:60px solid var(--cream);
+    transition:border-color .2s ease;
+  }
+  input[type="range"]{
+    -webkit-appearance:none;
+    width:100%;
+    height:1px;
+    background:var(--cream-faint);
+  }
+  input[type="range"]::-webkit-slider-thumb{
+    -webkit-appearance:none;
+    width:11px; height:11px;
+    border-radius:50%;
+    background:var(--cream);
+    cursor:pointer;
+    margin-top:0;
+  }
+  input[type="range"]::-moz-range-thumb{
+    width:11px; height:11px; border:none; border-radius:50%;
+    background:var(--cream); cursor:pointer;
+  }
+  .slider-io{
+    display:flex; justify-content:space-between; width:100%;
+    font-family:var(--mono); font-size:9px; letter-spacing:.1em; color:var(--cream-dim);
+  }
+
+  /* ---- Sketch / 01 — contained scribble canvas ---- */
+  .sketch-wrap{
+    position:relative;
+    width:100%;
+    height:100%;
+  }
+  .sketch-canvas{
+    display:block;
+    width:100%;
+    height:100%;
+    touch-action:none;
+    cursor:crosshair;
+  }
+  .sketch-clear{
+    position:absolute;
+    top:10px; right:10px;
+    z-index:3;
+    background:transparent;
+    border:1px solid var(--cream-faint);
+    color:var(--cream-dim);
+    font-family:var(--mono);
+    font-size:9px;
+    letter-spacing:.12em;
+    padding:5px 10px;
+    transition:border-color .2s ease, color .2s ease;
+  }
+  .sketch-clear:hover, .sketch-clear:focus-visible{
+    border-color:var(--lime);
+    color:var(--lime);
+  }
+
+  .pg-foot{
+    position:relative;
+    margin-top:20px;
+    display:flex;
+    justify-content:space-between;
+    font-family:var(--mono);
+    font-size:10px;
+    letter-spacing:.08em;
+    color:var(--cream-dim);
+  }
+
+  footer{
+    background:var(--cream);
+    color:rgba(0,0,0,.5);
+    padding:26px clamp(20px,6vw,64px) 34px;
+    display:flex;
+    justify-content:space-between;
+    font-family:var(--mono);
+    font-size:10px;
+    letter-spacing:.08em;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+  footer a{ text-decoration:none; }
+  footer a:hover{ color:var(--black); }
+
+  /* ---- Mobile: compact, horizontally-scrollable module row ----
+     Rather than stacking six tall cells in one long column, the
+     Playroom becomes a swipeable strip of fixed-width cards on
+     narrow screens — shorter page, same interactions. */
+  @media (max-width:720px){
+    .playground{ padding-bottom:64px; }
+    .pg-grid{
+      display:flex;
+      overflow-x:auto;
+      overflow-y:visible;
+      -webkit-overflow-scrolling:touch;
+      scroll-snap-type:x proximity;
+      border-top:none;
+      border-left:none;
+      gap:1px;
+      margin:0 -20px;
+      padding:0 20px 6px;
+    }
+    .pg-cell{
+      flex:0 0 auto;
+      width:78vw;
+      max-width:320px;
+      min-height:210px;
+      border-left:1px solid var(--cream-faint);
+      border-top:1px solid var(--cream-faint);
+      scroll-snap-align:center;
+    }
+    .spark-object{ width:clamp(50px,16vw,70px); }
+    .tension-object{ width:16px; height:16px; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+  }
+</style>
+</head>
+<body>
+
+  <a class="back-nav" href="index.html">
+    <span class="arrow">←</span> BACK TO LAB
+  </a>
+
+  <header class="playroom-header">
+    <div class="mono-label">LL-EXP&nbsp;/&nbsp;01&nbsp;&nbsp;/&nbsp;&nbsp;COORD 051/118</div>
+    <h1>Playroom.</h1>
+    <p>The working laboratory underneath the brand. Drag it, pull it, type into it, sketch on it — everything here resets.</p>
+  </header>
+
+  <section class="playground">
+    <div class="pg-bg-grid"></div>
+
+    <div class="pg-foot-label">DRAG&nbsp;/&nbsp;PULL&nbsp;/&nbsp;TYPE&nbsp;/&nbsp;SKETCH</div>
+
+    <div class="pg-grid">
+
+      <!-- 1: draggable Lindley Lab spark -->
+      <div class="pg-cell">
+        <span class="cell-label">LL-XP / 001</span>
+        <img
+          class="pg-object spark-object"
+          data-drag
+          src="LL_SPARK_CREAM.svg"
+          alt=""
+          draggable="false"
+          style="transform:rotate(-6deg) translateY(-6px);"
+        />
+      </div>
+
+      <!-- 2: draggable coordinate dot -->
+      <div class="pg-cell">
+        <span class="cell-label">COORD / 118</span>
+        <div class="pg-coord-dot" data-coord-drag></div>
+        <span class="mono-label pg-coord-readout" id="coordReadout">X 000 · Y 000</span>
+      </div>
+
+      <!-- 3: tension / elastic pull-and-release -->
+      <div class="pg-cell">
+        <span class="cell-label">TENSION / 02</span>
+        <div class="tension-wrap">
+          <div class="tension-anchor"></div>
+          <div class="tension-line" id="tensionLine"></div>
+          <div class="tension-object" id="tensionObject"></div>
+        </div>
+      </div>
+
+      <!-- 4: type field -->
+      <div class="pg-cell">
+        <span class="cell-label">TYPE_TEST</span>
+        <div class="type-field-wrap">
+          <input class="type-input" id="typeInput" maxlength="18" placeholder="TYPE SOMETHING" />
+          <div class="type-preview" id="typePreview">Aa</div>
+        </div>
+      </div>
+
+      <!-- 5: slider shape -->
+      <div class="pg-cell">
+        <span class="cell-label">OBJECT_07 / SCALE</span>
+        <div class="slider-wrap">
+          <div class="slider-shape" id="sliderShape"></div>
+          <input type="range" id="scaleSlider" min="40" max="160" value="100" />
+          <div class="slider-io"><span>INPUT</span><span>OUTPUT</span></div>
+        </div>
+      </div>
+
+      <!-- 6: sketch box -->
+      <div class="pg-cell">
+        <span class="cell-label">SKETCH / 01</span>
+        <div class="sketch-wrap">
+          <canvas class="sketch-canvas" id="sketchCanvas"></canvas>
+          <button class="sketch-clear" id="sketchClear" type="button">CLEAR</button>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="pg-foot">
+      <span>STATUS / EXPERIMENTAL</span>
+      <span>BUILD / BREAK / REPEAT</span>
+      <span>CREATING WHAT ISN'T</span>
+    </div>
+  </section>
+
+  <footer>
+    <span>LINDLEY LAB © 2026</span>
+    <a href="index.html">← BACK TO LAB</a>
+  </footer>
+
+<script>
+(function(){
+  "use strict";
+
+  // generic drag-to-move (translate only)
+  function makeDraggable(el, opts){
+    opts = opts || {};
+    var state = { active:false, startX:0, startY:0, curX:0, curY:0, baseRot: opts.baseRot || 0 };
+    el.addEventListener("pointerdown", function(e){
+      state.active = true;
+      el.setPointerCapture(e.pointerId);
+      el.classList.add("grabbed");
+      state.startX = e.clientX - state.curX;
+      state.startY = e.clientY - state.curY;
+    });
+    el.addEventListener("pointermove", function(e){
+      if (!state.active) return;
+      state.curX = e.clientX - state.startX;
+      state.curY = e.clientY - state.startY;
+      el.style.transform = "translate(" + state.curX + "px," + state.curY + "px) rotate(" + state.baseRot + "deg)";
+      if (opts.onMove) opts.onMove(state.curX, state.curY);
+    });
+    function release(e){
+      if (!state.active) return;
+      state.active = false;
+      el.classList.remove("grabbed");
+      if (opts.snapBack){
+        state.curX = 0; state.curY = 0;
+        el.style.transition = "transform .5s cubic-bezier(.16,1,.3,1)";
+        el.style.transform = "translate(0,0) rotate(" + state.baseRot + "deg)";
+        setTimeout(function(){ el.style.transition = ""; }, 520);
+      }
+    }
+    el.addEventListener("pointerup", release);
+    el.addEventListener("pointercancel", release);
+  }
+
+  document.querySelectorAll("[data-drag]").forEach(function(el){
+    makeDraggable(el, { baseRot: -6, snapBack: false });
+  });
+
+  // coordinate dot
+  var coordDot = document.querySelector("[data-coord-drag]");
+  var coordReadout = document.getElementById("coordReadout");
+  if (coordDot){
+    makeDraggable(coordDot, {
+      onMove: function(x,y){
+        coordReadout.textContent = "X " + Math.round(51 + x) + " · Y " + Math.round(118 + y);
+      },
+      snapBack: false
+    });
+  }
+
+  // type field
+  var typeInput = document.getElementById("typeInput");
+  var typePreview = document.getElementById("typePreview");
+  if (typeInput){
+    typeInput.addEventListener("input", function(){
+      typePreview.textContent = typeInput.value || "Aa";
+    });
+  }
+
+  // scale slider
+  var scaleSlider = document.getElementById("scaleSlider");
+  var sliderShape = document.getElementById("sliderShape");
+  if (scaleSlider){
+    scaleSlider.addEventListener("input", function(){
+      var v = scaleSlider.value / 100;
+      sliderShape.style.transform = "scale(" + v.toFixed(2) + ")";
+      sliderShape.style.transition = "transform .05s linear";
+    });
+  }
+
+  // ---- Tension / 02 — elastic pull-and-release ----
+  var tensionObject = document.getElementById("tensionObject");
+  var tensionLine = document.getElementById("tensionLine");
+
+  if (tensionObject && tensionLine){
+    var reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var MAX_PULL = 46;      // how far the object can visually travel from centre
+    var STIFFNESS = 0.22;
+    var DAMPING = 0.72;
+
+    var tState = {
+      dragging:false,
+      startX:0, startY:0,
+      x:0, y:0,           // current visual offset
+      vx:0, vy:0,         // spring velocity
+      springFrame:null
+    };
+
+    function renderTension(x, y){
+      tensionObject.style.transform = "translate(" + x.toFixed(2) + "px," + y.toFixed(2) + "px)";
+      var dist = Math.sqrt(x*x + y*y);
+      var angle = Math.atan2(y, x) * 180 / Math.PI;
+      tensionLine.style.width = dist.toFixed(2) + "px";
+      tensionLine.style.transform = "rotate(" + angle.toFixed(2) + "deg)";
+      tensionLine.style.opacity = dist > 1 ? Math.min(1, dist / MAX_PULL) * 0.7 : 0;
+    }
+
+    function stopSpring(){
+      if (tState.springFrame){
+        cancelAnimationFrame(tState.springFrame);
+        tState.springFrame = null;
+      }
+    }
+
+    function springBack(){
+      if (reducedMotion){
+        tState.x = 0; tState.y = 0;
+        renderTension(0, 0);
+        return;
+      }
+      function step(){
+        var fx = -STIFFNESS * tState.x;
+        var fy = -STIFFNESS * tState.y;
+        tState.vx = (tState.vx + fx) * DAMPING;
+        tState.vy = (tState.vy + fy) * DAMPING;
+        tState.x += tState.vx;
+        tState.y += tState.vy;
+        renderTension(tState.x, tState.y);
+
+        var settled = Math.abs(tState.x) < 0.4 && Math.abs(tState.y) < 0.4 &&
+                      Math.abs(tState.vx) < 0.4 && Math.abs(tState.vy) < 0.4;
+        if (settled){
+          tState.x = 0; tState.y = 0; tState.vx = 0; tState.vy = 0;
+          renderTension(0, 0);
+          tState.springFrame = null;
+          return;
+        }
+        tState.springFrame = requestAnimationFrame(step);
+      }
+      stopSpring();
+      tState.springFrame = requestAnimationFrame(step);
+    }
+
+    tensionObject.addEventListener("pointerdown", function(e){
+      stopSpring();
+      tState.dragging = true;
+      tState.vx = 0; tState.vy = 0;
+      tensionObject.setPointerCapture(e.pointerId);
+      tensionObject.classList.add("grabbed");
+      tState.startX = e.clientX - tState.x;
+      tState.startY = e.clientY - tState.y;
+    });
+
+    tensionObject.addEventListener("pointermove", function(e){
+      if (!tState.dragging) return;
+      var rawX = e.clientX - tState.startX;
+      var rawY = e.clientY - tState.startY;
+      var dist = Math.sqrt(rawX*rawX + rawY*rawY);
+      if (dist < 0.001){
+        tState.x = 0; tState.y = 0;
+      } else {
+        // increasing resistance the further it's pulled — an elastic
+        // band, not a 1:1 drag
+        var eased = MAX_PULL * (1 - Math.exp(-dist / MAX_PULL));
+        var angle = Math.atan2(rawY, rawX);
+        tState.x = Math.cos(angle) * eased;
+        tState.y = Math.sin(angle) * eased;
+      }
+      renderTension(tState.x, tState.y);
+    });
+
+    function releaseTension(){
+      if (!tState.dragging) return;
+      tState.dragging = false;
+      tensionObject.classList.remove("grabbed");
+      springBack();
+    }
+    tensionObject.addEventListener("pointerup", releaseTension);
+    tensionObject.addEventListener("pointercancel", releaseTension);
+  }
+
+  // ---- Sketch / 01 — contained scribble canvas ----
+  var sketchCanvas = document.getElementById("sketchCanvas");
+  var sketchClear = document.getElementById("sketchClear");
+
+  if (sketchCanvas){
+    var sctx = sketchCanvas.getContext("2d");
+    var sDpr = Math.min(window.devicePixelRatio || 1, 2);
+    var sW = 0, sH = 0;
+    var isDrawing = false;
+    var lastX = 0, lastY = 0;
+
+    function sizeSketchCanvas(){
+      var rect = sketchCanvas.getBoundingClientRect();
+      sW = Math.max(1, rect.width);
+      sH = Math.max(1, rect.height);
+      sketchCanvas.width = sW * sDpr;
+      sketchCanvas.height = sH * sDpr;
+      sctx.setTransform(sDpr, 0, 0, sDpr, 0, 0);
+      sctx.lineCap = "round";
+      sctx.lineJoin = "round";
+      sctx.lineWidth = 2;
+      sctx.strokeStyle = "#F8EFE5";
+    }
+    sizeSketchCanvas();
+    window.addEventListener("resize", sizeSketchCanvas);
+
+    function posFromEvent(e){
+      var rect = sketchCanvas.getBoundingClientRect();
+      return { x: e.clientX - rect.left, y: e.clientY - rect.top };
+    }
+
+    sketchCanvas.addEventListener("pointerdown", function(e){
+      isDrawing = true;
+      sketchCanvas.setPointerCapture(e.pointerId);
+      var p = posFromEvent(e);
+      lastX = p.x; lastY = p.y;
+      // a single click/tap leaves a small dot rather than nothing
+      sctx.beginPath();
+      sctx.arc(p.x, p.y, 1, 0, Math.PI * 2);
+      sctx.fillStyle = "#F8EFE5";
+      sctx.fill();
+    });
+
+    sketchCanvas.addEventListener("pointermove", function(e){
+      if (!isDrawing) return;
+      var p = posFromEvent(e);
+      sctx.beginPath();
+      sctx.moveTo(lastX, lastY);
+      sctx.lineTo(p.x, p.y);
+      sctx.stroke();
+      lastX = p.x; lastY = p.y;
+    });
+
+    function stopSketch(){ isDrawing = false; }
+    sketchCanvas.addEventListener("pointerup", stopSketch);
+    sketchCanvas.addEventListener("pointercancel", stopSketch);
+    sketchCanvas.addEventListener("pointerleave", stopSketch);
+
+    if (sketchClear){
+      sketchClear.addEventListener("click", function(){
+        sctx.clearRect(0, 0, sW, sH);
+      });
+    }
+  }
+
+})();
+</script>
+</body>
+</html>
