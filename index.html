@@ -186,6 +186,9 @@
   .letter{
     display:inline-block;
     will-change:transform;
+    position:relative;
+    z-index:2;
+    pointer-events:none; /* letters never intercept clicks meant for what's beneath them */
   }
   .support-copy{
     margin:34px 0 0;
@@ -196,191 +199,54 @@
     font-family:var(--sans);
   }
 
-  /* ---- Playground ---- */
-  .playground{
-    background:var(--black);
-    padding:clamp(60px,8vw,90px) clamp(20px,6vw,64px) clamp(80px,10vw,110px);
-    overflow:hidden;
-  }
-  .pg-bg-grid{
-    position:absolute; inset:0; pointer-events:none;
-    background-image:
-      linear-gradient(var(--cream-grid) 1px, transparent 1px),
-      linear-gradient(90deg, var(--cream-grid) 1px, transparent 1px);
-    background-size:40px 40px;
-    mask-image:linear-gradient(to bottom, transparent, black 8%, black 92%, transparent);
-  }
-  .pg-head{
+  /* ---- Hidden Playroom easter egg (lives underneath the magnetic text) ---- */
+  .magnetic-stage{
     position:relative;
-    display:flex;
-    justify-content:space-between;
-    align-items:flex-end;
-    margin-bottom:clamp(36px,6vw,56px);
-    gap:20px;
   }
-  .pg-head h2{
-    margin:8px 0 0;
-    font-family:var(--serif);
-    font-weight:400;
-    font-size:clamp(40px,8vw,110px);
-    line-height:.92;
-  }
-  .pg-grid{
-    position:relative;
-    display:grid;
-    grid-template-columns:repeat(auto-fit, minmax(230px,1fr));
-    border-top:1px solid var(--cream-faint);
-    border-left:1px solid var(--cream-faint);
-  }
-  .pg-cell{
-    position:relative;
-    min-height:260px;
-    border-right:1px solid var(--cream-faint);
-    border-bottom:1px solid var(--cream-faint);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    overflow:visible;
-  }
-  .pg-cell .cell-label{
+  .playroom-egg{
     position:absolute;
-    left:16px; top:14px;
-    font-family:var(--mono);
-    font-size:10px;
-    letter-spacing:.08em;
-    color:var(--cream-dim);
-    z-index:2;
-  }
-  .pg-object{
-    font-size:clamp(58px,7vw,120px);
-    line-height:1;
-    user-select:none;
-    -webkit-user-select:none;
-    touch-action:none;
-    cursor:grab;
-    transition:color .25s ease;
-  }
-  .pg-object.grabbed{ cursor:grabbing; color:var(--lime); }
-  .pg-object.ll{ font-family:var(--serif); font-weight:500; }
-
-  .pg-coord-dot{
-    width:14px; height:14px;
-    border-radius:50%;
-    border:1.5px solid var(--cream);
-    cursor:grab;
-    touch-action:none;
-  }
-  .pg-coord-dot.grabbed{ border-color:var(--lime); }
-  .pg-coord-readout{
-    position:absolute;
-    bottom:14px; left:16px;
-    font-family:var(--mono);
-    font-size:10px;
-    color:var(--cream-dim);
-  }
-
-  .rotate-wrap{ position:relative; touch-action:none; }
-  .rotate-square{
-    width:88px; height:88px;
-    border:1.5px solid var(--cream);
-    cursor:grab;
-  }
-  .rotate-square.grabbed{ border-color:var(--lime); }
-  .rotate-handle{
-    position:absolute;
-    top:-26px; left:50%;
-    width:8px; height:8px;
-    margin-left:-4px;
-    border-radius:50%;
-    background:var(--cream);
-    cursor:grab;
-  }
-  .rotate-handle:hover, .rotate-handle.grabbed{ background:var(--lime); }
-
-  .type-field-wrap{
-    width:100%;
-    padding:0 22px;
-    text-align:center;
-  }
-  .type-input{
-    width:100%;
-    background:transparent;
-    border:none;
-    border-bottom:1px solid var(--cream-faint);
-    color:var(--cream);
-    font-family:var(--mono);
-    font-size:13px;
-    letter-spacing:.1em;
-    padding:8px 4px;
-    text-align:center;
-    outline:none;
-  }
-  .type-input::placeholder{ color:var(--cream-dim); }
-  .type-preview{
-    margin-top:18px;
-    min-height:52px;
-    font-family:var(--serif);
-    font-size:clamp(22px,3.4vw,40px);
-    word-break:break-word;
-  }
-
-  .slider-wrap{
-    width:100%;
-    padding:0 26px;
+    top:40%;
+    left:17%;
+    transform:translate(-50%,-50%) scale(.97);
+    z-index:1; /* sits behind the letters, in front of the section background */
     display:flex;
     flex-direction:column;
     align-items:center;
-    gap:18px;
+    gap:3px;
+    padding:10px 18px;
+    border:1px solid var(--cream-faint);
+    text-decoration:none;
+    white-space:nowrap;
+    opacity:.05;
+    transition:border-color .25s ease;
   }
-  .slider-shape{
-    width:0; height:0;
-    border-left:34px solid transparent;
-    border-right:34px solid transparent;
-    border-bottom:60px solid var(--cream);
-    transition:border-color .2s ease;
-  }
-  input[type="range"]{
-    -webkit-appearance:none;
-    width:100%;
-    height:1px;
-    background:var(--cream-faint);
-  }
-  input[type="range"]::-webkit-slider-thumb{
-    -webkit-appearance:none;
-    width:11px; height:11px;
-    border-radius:50%;
-    background:var(--cream);
-    cursor:pointer;
-    margin-top:0;
-  }
-  input[type="range"]::-moz-range-thumb{
-    width:11px; height:11px; border:none; border-radius:50%;
-    background:var(--cream); cursor:pointer;
-  }
-  .slider-io{
-    display:flex; justify-content:space-between; width:100%;
-    font-family:var(--mono); font-size:9px; letter-spacing:.1em; color:var(--cream-dim);
-  }
-
-  .distort-tile{
-    width:100%; height:100%;
-    display:flex; align-items:center; justify-content:center;
-    background-image:
-      linear-gradient(var(--cream-faint) 1px, transparent 1px),
-      linear-gradient(90deg, var(--cream-faint) 1px, transparent 1px);
-    background-size:20px 20px;
-    transition:transform .5s cubic-bezier(.16,1,.3,1);
-  }
-
-  .pg-foot{
-    position:relative;
-    margin-top:20px;
-    display:flex;
-    justify-content:space-between;
+  .playroom-egg .egg-label{
     font-family:var(--mono);
     font-size:10px;
-    letter-spacing:.08em;
-    color:var(--cream-dim);
+    letter-spacing:.14em;
+    color:var(--cream);
+  }
+  .playroom-egg .egg-sub{
+    font-family:var(--mono);
+    font-size:8px;
+    letter-spacing:.16em;
+    color:var(--lime);
+  }
+  .playroom-egg:hover,
+  .playroom-egg:focus-visible{
+    border-color:var(--lime);
+  }
+  .playroom-egg:focus-visible{
+    outline:1px dashed var(--lime);
+    outline-offset:6px;
+  }
+  @media (max-width:640px){
+    /* Headline wraps to more, shorter lines on mobile, so the egg is
+       repositioned (not just resized) to stay under where a thumb or
+       cursor naturally lands early in the interaction. */
+    .playroom-egg{ top:24%; left:24%; padding:8px 14px; }
+    .playroom-egg .egg-label{ font-size:9px; }
+    .playroom-egg .egg-sub{ font-size:7px; }
   }
 
   /* ---- Selected work ---- */
@@ -586,6 +452,7 @@
   @media (prefers-reduced-motion: reduce){
     html{ scroll-behavior:auto; }
     #introGate, #mainSite, .enter-btn, .contact-cta{ transition:none !important; }
+    .playroom-egg{ opacity:.32 !important; transform:translate(-50%,-50%) scale(1) !important; }
   }
 </style>
 </head>
@@ -626,78 +493,14 @@
 
     <!-- Magnetic banner -->
     <section class="magnetic-section">
-      <h1 class="magnetic-copy" id="magneticHeadline">We create brands that don't exist yet.</h1>
+      <div class="magnetic-stage">
+        <h1 class="magnetic-copy" id="magneticHeadline">We create brands that don't exist yet.</h1>
+        <a class="playroom-egg" id="playroomEgg" href="playroom.html" aria-label="Open Lindley Lab Playroom">
+          <span class="egg-label">LL-EXP / 01</span>
+          <span class="egg-sub">ENTER PLAYROOM</span>
+        </a>
+      </div>
       <p class="support-copy">Lindley Lab is an independent branding and design studio creating bold identities, digital experiences and brand worlds for businesses that care about how they show up.</p>
-    </section>
-
-    <!-- Playground -->
-    <section class="playground">
-      <div class="pg-bg-grid"></div>
-
-      <div class="pg-head">
-        <div>
-          <div class="mono-label">LL-XP&nbsp;/&nbsp;PLAYGROUND&nbsp;/&nbsp;001</div>
-          <h2>Experiment.</h2>
-        </div>
-        <div class="mono-label">DRAG&nbsp;/&nbsp;ROTATE&nbsp;/&nbsp;TYPE&nbsp;/&nbsp;TEST</div>
-      </div>
-
-      <div class="pg-grid">
-
-        <!-- 1: draggable LL mark -->
-        <div class="pg-cell">
-          <span class="cell-label">LL-XP / 001</span>
-          <div class="pg-object ll" data-drag style="transform:rotate(-6deg) translateY(-6px);">LL</div>
-        </div>
-
-        <!-- 2: draggable coordinate dot -->
-        <div class="pg-cell">
-          <span class="cell-label">COORD / 118</span>
-          <div class="pg-coord-dot" data-coord-drag></div>
-          <span class="mono-label pg-coord-readout" id="coordReadout">X 000 · Y 000</span>
-        </div>
-
-        <!-- 3: rotate square -->
-        <div class="pg-cell">
-          <span class="cell-label">TEST_03 / ROTATE</span>
-          <div class="rotate-wrap">
-            <div class="rotate-handle" data-rotate-handle></div>
-            <div class="rotate-square" data-rotate-square></div>
-          </div>
-        </div>
-
-        <!-- 4: type field -->
-        <div class="pg-cell">
-          <span class="cell-label">TYPE_TEST</span>
-          <div class="type-field-wrap">
-            <input class="type-input" id="typeInput" maxlength="18" placeholder="TYPE SOMETHING" />
-            <div class="type-preview" id="typePreview">Aa</div>
-          </div>
-        </div>
-
-        <!-- 5: slider shape -->
-        <div class="pg-cell">
-          <span class="cell-label">OBJECT_07 / SCALE</span>
-          <div class="slider-wrap">
-            <div class="slider-shape" id="sliderShape"></div>
-            <input type="range" id="scaleSlider" min="40" max="160" value="100" />
-            <div class="slider-io"><span>INPUT</span><span>OUTPUT</span></div>
-          </div>
-        </div>
-
-        <!-- 6: distort tile -->
-        <div class="pg-cell" id="distortCell">
-          <span class="cell-label">OBJECT_09 / DISTORT</span>
-          <div class="distort-tile" id="distortTile"></div>
-        </div>
-
-      </div>
-
-      <div class="pg-foot">
-        <span>STATUS / EXPERIMENTAL</span>
-        <span>BUILD / BREAK / REPEAT</span>
-        <span>CREATING WHAT ISN'T</span>
-      </div>
     </section>
 
     <!-- Selected Work -->
@@ -1029,126 +832,61 @@
   requestAnimationFrame(tickMagnetic);
 
   /* ============================================================
-     PLAYGROUND INTERACTIONS
+     HIDDEN PLAYROOM EASTER EGG
+     Lives underneath the magnetic headline. It uses the exact same
+     mouse/touch position already tracked for the letter-scatter
+     effect above, so the control reveals precisely where — and
+     while — the letters are being pushed out of the way.
      ============================================================ */
+  var playroomEgg = document.getElementById("playroomEgg");
 
-  // generic drag-to-move (translate only)
-  function makeDraggable(el, opts){
-    opts = opts || {};
-    var state = { active:false, startX:0, startY:0, curX:0, curY:0, baseRot: opts.baseRot || 0 };
-    el.addEventListener("pointerdown", function(e){
-      state.active = true;
-      el.setPointerCapture(e.pointerId);
-      el.classList.add("grabbed");
-      state.startX = e.clientX - state.curX;
-      state.startY = e.clientY - state.curY;
-    });
-    el.addEventListener("pointermove", function(e){
-      if (!state.active) return;
-      state.curX = e.clientX - state.startX;
-      state.curY = e.clientY - state.startY;
-      el.style.transform = "translate(" + state.curX + "px," + state.curY + "px) rotate(" + state.baseRot + "deg)";
-      if (opts.onMove) opts.onMove(state.curX, state.curY);
-    });
-    function release(e){
-      if (!state.active) return;
-      state.active = false;
-      el.classList.remove("grabbed");
-      if (opts.snapBack){
-        state.curX = 0; state.curY = 0;
-        el.style.transition = "transform .5s cubic-bezier(.16,1,.3,1)";
-        el.style.transform = "translate(0,0) rotate(" + state.baseRot + "deg)";
-        setTimeout(function(){ el.style.transition = ""; }, 520);
+  if (playroomEgg){
+    var eggBase = { x: 0, y: 0 };
+    var eggReveal = 0.05; // small permanent hint, per the brief
+    var eggManualReveal = false; // true while focused via keyboard
+
+    function cacheEggBase(){
+      var host = magSection.getBoundingClientRect();
+      var r = playroomEgg.getBoundingClientRect();
+      eggBase.x = (r.left + r.width / 2) - host.left;
+      eggBase.y = (r.top + r.height / 2) - host.top;
+    }
+    cacheEggBase();
+    window.addEventListener("resize", cacheEggBase);
+
+    // Keep it clearly visible whenever a keyboard user tabs to it —
+    // discoverability shouldn't depend on triggering the scatter animation.
+    playroomEgg.addEventListener("focus", function(){ eggManualReveal = true; });
+    playroomEgg.addEventListener("blur", function(){ eggManualReveal = false; });
+
+    var EGG_RADIUS = 150;
+
+    function tickEgg(){
+      if (reducedMotion){
+        // Static accessible fallback — no motion required to find or use it.
+        requestAnimationFrame(tickEgg);
+        return;
       }
+
+      var dx = eggBase.x - magMouse.x;
+      var dy = eggBase.y - magMouse.y;
+      var dist = Math.sqrt(dx * dx + dy * dy);
+      var proximity = dist < EGG_RADIUS ? (1 - dist / EGG_RADIUS) : 0;
+      var target = Math.max(0.05, eggManualReveal ? 1 : proximity);
+
+      // Rise quickly as letters scatter away from it, decay slowly
+      // afterward so there's always time to actually move the cursor
+      // over and click it before it fades back under the text.
+      var rate = target > eggReveal ? 0.22 : 0.035;
+      eggReveal += (target - eggReveal) * rate;
+
+      playroomEgg.style.opacity = eggReveal.toFixed(3);
+      var scale = 0.97 + eggReveal * 0.05;
+      playroomEgg.style.transform = "translate(-50%,-50%) scale(" + scale.toFixed(3) + ")";
+
+      requestAnimationFrame(tickEgg);
     }
-    el.addEventListener("pointerup", release);
-    el.addEventListener("pointercancel", release);
-  }
-
-  document.querySelectorAll("[data-drag]").forEach(function(el){
-    makeDraggable(el, { baseRot: -6, snapBack: false });
-  });
-
-  // coordinate dot
-  var coordDot = document.querySelector("[data-coord-drag]");
-  var coordReadout = document.getElementById("coordReadout");
-  if (coordDot){
-    makeDraggable(coordDot, {
-      onMove: function(x,y){
-        coordReadout.textContent = "X " + Math.round(51 + x) + " · Y " + Math.round(118 + y);
-      },
-      snapBack: false
-    });
-  }
-
-  // rotate square via handle
-  var rotateWrap = document.querySelector(".rotate-wrap");
-  var rotateSquare = document.querySelector("[data-rotate-square]");
-  var rotateHandle = document.querySelector("[data-rotate-handle]");
-  makeDraggable(rotateSquare, { baseRot: 0, snapBack: false });
-
-  if (rotateHandle && rotateSquare){
-    var rState = { active:false, angle:0 };
-    rotateHandle.addEventListener("pointerdown", function(e){
-      rState.active = true;
-      rotateHandle.setPointerCapture(e.pointerId);
-      rotateHandle.classList.add("grabbed");
-      rotateSquare.classList.add("grabbed");
-    });
-    rotateHandle.addEventListener("pointermove", function(e){
-      if (!rState.active) return;
-      var rect = rotateSquare.getBoundingClientRect();
-      var cx = rect.left + rect.width/2;
-      var cy = rect.top + rect.height/2;
-      var angle = Math.atan2(e.clientY - cy, e.clientX - cx) * 180 / Math.PI + 90;
-      rState.angle = angle;
-      rotateSquare.style.transform = "rotate(" + angle + "deg)";
-      rotateHandle.style.transform = "rotate(" + angle + "deg) translateY(0)";
-    });
-    function releaseR(){
-      rState.active = false;
-      rotateHandle.classList.remove("grabbed");
-      rotateSquare.classList.remove("grabbed");
-    }
-    rotateHandle.addEventListener("pointerup", releaseR);
-    rotateHandle.addEventListener("pointercancel", releaseR);
-  }
-
-  // type field
-  var typeInput = document.getElementById("typeInput");
-  var typePreview = document.getElementById("typePreview");
-  if (typeInput){
-    typeInput.addEventListener("input", function(){
-      typePreview.textContent = typeInput.value || "Aa";
-    });
-  }
-
-  // scale slider
-  var scaleSlider = document.getElementById("scaleSlider");
-  var sliderShape = document.getElementById("sliderShape");
-  if (scaleSlider){
-    scaleSlider.addEventListener("input", function(){
-      var v = scaleSlider.value / 100;
-      sliderShape.style.transform = "scale(" + v.toFixed(2) + ")";
-      sliderShape.style.transition = "transform .05s linear";
-    });
-  }
-
-  // distort tile
-  var distortCell = document.getElementById("distortCell");
-  var distortTile = document.getElementById("distortTile");
-  if (distortCell){
-    distortCell.addEventListener("pointermove", function(e){
-      var rect = distortCell.getBoundingClientRect();
-      var relX = (e.clientX - rect.left) / rect.width - 0.5;
-      var relY = (e.clientY - rect.top) / rect.height - 0.5;
-      distortTile.style.transition = "none";
-      distortTile.style.transform = "scale(1.05) skew(" + (relX*8).toFixed(2) + "deg," + (relY*8).toFixed(2) + "deg)";
-    });
-    distortCell.addEventListener("pointerleave", function(){
-      distortTile.style.transition = "transform .5s cubic-bezier(.16,1,.3,1)";
-      distortTile.style.transform = "scale(1) skew(0deg,0deg)";
-    });
+    requestAnimationFrame(tickEgg);
   }
 
 })();
