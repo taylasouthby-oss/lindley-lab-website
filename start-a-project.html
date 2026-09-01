@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Start a Project — Lindley Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<!--
+  COOKIE / TRACKING NOTE:
+  No non-essential analytics or advertising trackers are intentionally added here.
+  If analytics, advertising pixels or other non-essential tracking are introduced later,
+  add an appropriate consent-management solution BEFORE those scripts are allowed to run.
+-->
+<style>
+:root{
+  --black:#000000;
+  --cream:#F8EFE5;
+  --cream-dim:rgba(248,239,229,.55);
+  --cream-faint:rgba(248,239,229,.18);
+  --lime:#C6FF34;
+  --serif:"DM Serif Display","Times New Roman",serif;
+  --mono:"JetBrains Mono",ui-monospace,monospace;
+  --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  background:var(--cream);
+  color:var(--black);
+  font-family:var(--sans);
+  -webkit-font-smoothing:antialiased;
+}
+::selection{background:var(--lime);color:var(--black)}
+a{color:inherit}
+.page-nav{
+  position:relative;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:24px;
+  padding:22px clamp(20px,4vw,48px);
+  border-bottom:1px solid rgba(0,0,0,.12);
+  font-family:var(--mono);
+}
+.nav-mark{font-size:13px;letter-spacing:.1em;text-decoration:none}
+.nav-links{display:flex;gap:clamp(14px,3vw,34px);flex-wrap:wrap}
+.nav-links a{
+  font-size:11px;
+  letter-spacing:.1em;
+  text-decoration:none;
+  opacity:.75;
+}
+.nav-links a:hover{opacity:1}
+.page-shell{
+  width:min(1280px,100%);
+  margin:0 auto;
+  padding:clamp(72px,10vw,132px) clamp(20px,6vw,64px);
+}
+.kicker{
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:.12em;
+  color:rgba(0,0,0,.48);
+  margin-bottom:22px;
+}
+.display{
+  margin:0;
+  font-family:var(--serif);
+  font-weight:400;
+  font-size:clamp(48px,8vw,118px);
+  line-height:.98;
+  letter-spacing:-.015em;
+  max-width:1050px;
+  overflow-wrap:normal;
+  word-break:normal;
+}
+.intro-copy{
+  margin:32px 0 0;
+  max-width:650px;
+  font-size:17px;
+  line-height:1.65;
+  color:rgba(0,0,0,.62);
+}
+.rule{height:1px;background:rgba(0,0,0,.14);margin:clamp(44px,6vw,78px) 0}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:34px 42px}
+.field.full{grid-column:1 / -1}
+label,.legend{
+  display:block;
+  font-family:var(--mono);
+  font-size:10px;
+  letter-spacing:.1em;
+  margin-bottom:10px;
+}
+input,textarea,select{
+  width:100%;
+  border:0;
+  border-bottom:1px solid rgba(0,0,0,.48);
+  background:transparent;
+  color:var(--black);
+  padding:10px 0 14px;
+  font:inherit;
+  font-size:16px;
+  border-radius:0;
+  outline:none;
+}
+textarea{min-height:150px;resize:vertical}
+input:focus,textarea:focus,select:focus{border-bottom-color:var(--black)}
+.choice-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+}
+.choice-row label{
+  position:relative;
+  margin:0;
+  cursor:pointer;
+}
+.choice-row input{
+  position:absolute;
+  opacity:0;
+  pointer-events:none;
+}
+.choice-row span{
+  display:inline-block;
+  border:1px solid rgba(0,0,0,.22);
+  padding:10px 13px;
+  font-family:var(--mono);
+  font-size:10px;
+  letter-spacing:.06em;
+  transition:.2s ease;
+}
+.choice-row input:checked + span{
+  background:var(--black);
+  color:var(--cream);
+  border-color:var(--black);
+}
+.submit-row{
+  margin-top:44px;
+  display:flex;
+  align-items:center;
+  gap:24px;
+  flex-wrap:wrap;
+}
+.submit-btn{
+  display:inline-flex;
+  align-items:center;
+  gap:12px;
+  border:0;
+  border-radius:999px;
+  background:var(--black);
+  color:var(--cream);
+  padding:16px 28px;
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:.12em;
+  cursor:pointer;
+  transition:transform .3s cubic-bezier(.6,0,.2,1);
+}
+.submit-btn:hover{transform:translateY(-2px) scale(1.02)}
+.submit-btn::before{
+  content:"";
+  width:7px;height:7px;border-radius:50%;background:var(--lime);
+}
+.form-note{
+  font-size:12px;
+  line-height:1.5;
+  color:rgba(0,0,0,.55);
+}
+.legal-layout{
+  display:grid;
+  grid-template-columns:minmax(0,720px);
+}
+.legal-layout h2{
+  font-family:var(--serif);
+  font-weight:400;
+  font-size:clamp(30px,4vw,46px);
+  margin:50px 0 14px;
+}
+.legal-layout h3{
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:.08em;
+  margin:30px 0 10px;
+}
+.legal-layout p,.legal-layout li{
+  font-size:15px;
+  line-height:1.75;
+  color:rgba(0,0,0,.68);
+}
+.placeholder{
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:.04em;
+  color:var(--black);
+  border-left:2px solid var(--lime);
+  padding-left:14px;
+}
+.site-footer{
+  background:var(--black);
+  color:var(--cream);
+  padding:clamp(54px,7vw,86px) clamp(20px,6vw,64px) 28px;
+  font-family:var(--mono);
+  font-size:10px;
+  letter-spacing:.08em;
+}
+.footer-grid{
+  display:grid;
+  grid-template-columns:minmax(220px,1.4fr) repeat(3,minmax(130px,.7fr));
+  gap:clamp(30px,5vw,72px);
+  padding-bottom:clamp(46px,6vw,72px);
+}
+.footer-brand{max-width:320px}
+.footer-logo{font-size:13px;letter-spacing:.12em;margin-bottom:16px}
+.footer-tagline{
+  font-family:var(--serif);
+  font-size:clamp(28px,3vw,42px);
+  line-height:1.02;
+  letter-spacing:0;
+}
+.footer-heading{color:var(--cream-dim);margin-bottom:16px}
+.footer-links{display:flex;flex-direction:column;gap:10px}
+.footer-links a{text-decoration:none;width:max-content;max-width:100%}
+.footer-links a:hover{color:var(--lime)}
+.footer-bottom{
+  border-top:1px solid var(--cream-faint);
+  padding-top:20px;
+  display:flex;
+  justify-content:space-between;
+  gap:16px;
+  flex-wrap:wrap;
+  color:var(--cream-dim);
+}
+
+.form-status{
+  margin-top:34px;
+  border-top:1px solid rgba(0,0,0,.14);
+  padding-top:28px;
+  display:none;
+}
+.form-status.visible{display:block}
+.form-status .status-kicker{
+  font-family:var(--mono);
+  font-size:10px;
+  letter-spacing:.12em;
+  color:rgba(0,0,0,.48);
+  margin-bottom:14px;
+}
+.form-status h2{
+  margin:0;
+  font-family:var(--serif);
+  font-weight:400;
+  font-size:clamp(38px,5vw,64px);
+  line-height:1;
+}
+.form-status p{
+  max-width:620px;
+  margin:18px 0 0;
+  font-size:15px;
+  line-height:1.7;
+  color:rgba(0,0,0,.62);
+}
+.status-link{
+  display:inline-block;
+  margin-top:22px;
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:.1em;
+  text-decoration:none;
+  border-bottom:1px solid currentColor;
+  padding-bottom:3px;
+}
+.submit-btn[disabled]{
+  opacity:.55;
+  cursor:wait;
+  transform:none;
+}
+
+@media(max-width:840px){
+  .form-grid{grid-template-columns:1fr}
+  .field.full{grid-column:auto}
+  .footer-grid{grid-template-columns:1fr 1fr}
+  .footer-brand{grid-column:1/-1}
+}
+@media(max-width:640px){
+  .page-nav{align-items:flex-start;flex-direction:column}
+}
+@media(max-width:520px){
+  .footer-grid{grid-template-columns:1fr}
+  .footer-brand{grid-column:auto}
+}
+</style>
+</head>
+<body>
+<nav class="page-nav">
+  <a class="nav-mark" href="index.html">LINDLEY LAB</a>
+  <div class="nav-links">
+    <a href="index.html#work">WORK</a>
+    <a href="index.html#services">SERVICES</a>
+    <a href="index.html#studio">STUDIO</a>
+    <a href="start-a-project.html">CONTACT</a>
+  </div>
+</nav>
+
+<main class="page-shell">
+  <div class="kicker">START A PROJECT</div>
+  <h1 class="display">Have something in mind? Let’s make it exist.</h1>
+  <p class="intro-copy">Tell us a little about what you’re working on. You don’t need to have everything figured out yet.</p>
+
+  <div class="rule"></div>
+
+  <!--
+    FORM INTEGRATION:
+    This form intentionally has no processing service/backend attached yet.
+    Connect the final submission endpoint/service here before launch.
+  -->
+  <form id="projectForm" action="https://formspree.io/f/mdeogoyq" method="POST">
+    <input type="hidden" name="_subject" value="New Lindley Lab Project Enquiry">
+    <div class="form-grid">
+      <div class="field">
+        <label for="name">NAME *</label>
+        <input id="name" name="name" type="text" autocomplete="name" required>
+      </div>
+      <div class="field">
+        <label for="company">COMPANY / BRAND</label>
+        <input id="company" name="company" type="text" autocomplete="organization">
+      </div>
+      <div class="field">
+        <label for="email">EMAIL *</label>
+        <input id="email" name="email" type="email" autocomplete="email" required>
+      </div>
+      <div class="field">
+        <label for="help">WHAT CAN WE HELP WITH? *</label>
+        <select id="help" name="help" required>
+          <option value="" selected disabled>Select one</option>
+          <option>Brand Identity</option>
+          <option>Brand Refresh</option>
+          <option>Packaging</option>
+          <option>Campaign</option>
+          <option>Ongoing Design Support</option>
+          <option>Other</option>
+        </select>
+      </div>
+
+      <div class="field full">
+        <label for="project">TELL US ABOUT THE PROJECT *</label>
+        <textarea id="project" name="project" required></textarea>
+      </div>
+
+      <div class="field full">
+        <div class="legend">APPROXIMATE BUDGET</div>
+        <div class="choice-row">
+          <label><input type="radio" name="budget" value="Under £1,000"><span>Under £1,000</span></label>
+          <label><input type="radio" name="budget" value="£1,000–£2,500"><span>£1,000–£2,500</span></label>
+          <label><input type="radio" name="budget" value="£2,500–£5,000"><span>£2,500–£5,000</span></label>
+          <label><input type="radio" name="budget" value="£5,000+"><span>£5,000+</span></label>
+          <label><input type="radio" name="budget" value="Not sure yet"><span>Not sure yet</span></label>
+        </div>
+      </div>
+
+      <div class="field full">
+        <div class="legend">IDEAL TIMEFRAME</div>
+        <div class="choice-row">
+          <label><input type="radio" name="timeframe" value="ASAP"><span>ASAP</span></label>
+          <label><input type="radio" name="timeframe" value="1–2 months"><span>1–2 months</span></label>
+          <label><input type="radio" name="timeframe" value="3–6 months"><span>3–6 months</span></label>
+          <label><input type="radio" name="timeframe" value="Flexible"><span>Flexible</span></label>
+        </div>
+      </div>
+    </div>
+
+    <div class="submit-row">
+      <button class="submit-btn" type="submit">SEND ENQUIRY →</button>
+      <div class="form-note">By submitting this form, you acknowledge our <a href="privacy.html">Privacy Policy</a>.</div>
+    </div>
+  </form>
+
+  <div id="formSuccess" class="form-status" aria-live="polite">
+    <div class="status-kicker">LL-INQ / RECEIVED ✓</div>
+    <h2>Enquiry received.</h2>
+    <p>Thanks for getting in touch. We’ll take a look through everything and get back to you soon.</p>
+    <a class="status-link" href="index.html">BACK TO THE LAB →</a>
+  </div>
+
+  <div id="formError" class="form-status" aria-live="polite">
+    <div class="status-kicker">LL-INQ / ERROR</div>
+    <h2>Something went wrong.</h2>
+    <p>Your enquiry didn’t send this time. Please try again, or email us directly at <a href="mailto:hello@lindleylab.co.uk">hello@lindleylab.co.uk</a>.</p>
+  </div>
+</main>
+
+
+<footer class="site-footer">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="footer-logo">LINDLEY LAB</div>
+      <div class="footer-tagline">Creating what isn’t.</div>
+    </div>
+    <div>
+      <div class="footer-heading">EXPLORE</div>
+      <div class="footer-links">
+        <a href="index.html#work">Work</a>
+        <a href="index.html#services">Services</a>
+        <a href="index.html#studio">Studio</a>
+        <a href="playroom.html">Playroom</a>
+        <a href="start-a-project.html">Start a Project</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-heading">CONNECT</div>
+      <div class="footer-links">
+        <!-- TODO: Replace # with the final Lindley Lab Instagram URL -->
+        <a href="#" target="_blank" rel="noopener noreferrer">Instagram ↗</a>
+        <!-- TODO: Replace # with the final Lindley Lab LinkedIn URL -->
+        <a href="#" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+        <!-- TODO: Replace # with the final Lindley Lab email/mailto link -->
+        <a href="#">Email ↗</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-heading">LEGAL</div>
+      <div class="footer-links">
+        <a href="privacy.html">Privacy</a>
+        <a href="cookies.html">Cookies</a>
+        <a href="terms.html">Website Terms</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 LINDLEY LAB</span>
+    <span>BRANDING &amp; DESIGN STUDIO / UK</span>
+  </div>
+</footer>
+
+
+<script>
+(function(){
+  var form = document.getElementById("projectForm");
+  var success = document.getElementById("formSuccess");
+  var error = document.getElementById("formError");
+  var submit = form ? form.querySelector(".submit-btn") : null;
+
+  if (!form) return;
+
+  form.addEventListener("submit", async function(e){
+    e.preventDefault();
+
+    success.classList.remove("visible");
+    error.classList.remove("visible");
+
+    if (submit){
+      submit.disabled = true;
+      submit.textContent = "SENDING…";
+    }
+
+    try{
+      var response = await fetch(form.action, {
+        method: "POST",
+        body: new FormData(form),
+        headers: { "Accept": "application/json" }
+      });
+
+      if (response.ok){
+        form.reset();
+        form.style.display = "none";
+        success.classList.add("visible");
+        success.scrollIntoView({ behavior: "smooth", block: "center" });
+      } else {
+        throw new Error("Form submission failed");
+      }
+    } catch(err){
+      error.classList.add("visible");
+      if (submit){
+        submit.disabled = false;
+        submit.textContent = "SEND ENQUIRY →";
+      }
+      error.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  });
+})();
+</script>
+
+</body>
+</html>
