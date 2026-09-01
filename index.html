@@ -498,17 +498,65 @@
   .contact-cta:hover{ transform:scale(1.045); }
   .contact-cta .dot{ width:7px; height:7px; border-radius:50%; background:var(--lime); }
 
-  footer{
-    background:var(--cream);
-    color:rgba(0,0,0,.5);
-    padding:26px clamp(20px,6vw,64px) 34px;
-    display:flex;
-    justify-content:space-between;
+  .site-footer{
+    background:var(--black);
+    color:var(--cream);
+    padding:clamp(54px,7vw,86px) clamp(20px,6vw,64px) 28px;
     font-family:var(--mono);
     font-size:10px;
     letter-spacing:.08em;
-    flex-wrap:wrap;
+  }
+  .footer-grid{
+    display:grid;
+    grid-template-columns:minmax(220px,1.4fr) repeat(3,minmax(130px,.7fr));
+    gap:clamp(30px,5vw,72px);
+    padding-bottom:clamp(46px,6vw,72px);
+  }
+  .footer-brand{max-width:320px;}
+  .footer-brand .footer-logo{
+    font-size:13px;
+    letter-spacing:.12em;
+    margin-bottom:16px;
+  }
+  .footer-brand .footer-tagline{
+    font-family:var(--serif);
+    font-weight:400;
+    font-size:clamp(28px,3vw,42px);
+    line-height:1.02;
+    letter-spacing:0;
+  }
+  .footer-heading{
+    color:var(--cream-dim);
+    margin-bottom:16px;
+  }
+  .footer-links{
+    display:flex;
+    flex-direction:column;
     gap:10px;
+  }
+  .footer-links a{
+    color:var(--cream);
+    text-decoration:none;
+    width:max-content;
+    max-width:100%;
+  }
+  .footer-links a:hover{color:var(--lime);}
+  .footer-bottom{
+    border-top:1px solid var(--cream-faint);
+    padding-top:20px;
+    display:flex;
+    justify-content:space-between;
+    gap:16px;
+    flex-wrap:wrap;
+    color:var(--cream-dim);
+  }
+  @media (max-width:840px){
+    .footer-grid{grid-template-columns:1fr 1fr;}
+    .footer-brand{grid-column:1 / -1;}
+  }
+  @media (max-width:520px){
+    .footer-grid{grid-template-columns:1fr;}
+    .footer-brand{grid-column:auto;}
   }
 
   @media (prefers-reduced-motion: reduce){
@@ -651,12 +699,50 @@
     <section class="contact-section" id="contact">
       <div class="mono-label" style="margin-bottom:22px; color:rgba(0,0,0,.45);">START A PROJECT</div>
       <h2>Let's make something that isn't.</h2>
-      <button class="contact-cta"><span class="dot"></span>START A PROJECT</button>
+      <a class="contact-cta" href="start-a-project.html"><span class="dot"></span>START A PROJECT</a>
     </section>
 
-    <footer>
-      <span>LINDLEY LAB © 2026</span>
-      <span>LL-END / 001</span>
+    <footer class="site-footer">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="footer-logo">LINDLEY LAB</div>
+          <div class="footer-tagline">Creating what isn’t.</div>
+        </div>
+
+        <div>
+          <div class="footer-heading">EXPLORE</div>
+          <div class="footer-links">
+            <a href="#work">Work</a>
+            <a href="#services">Services</a>
+            <a href="#studio">Studio</a>
+            <a href="playroom.html">Playroom</a>
+            <a href="start-a-project.html">Start a Project</a>
+          </div>
+        </div>
+
+        <div>
+          <div class="footer-heading">CONNECT</div>
+          <div class="footer-links">
+            <a href="https://www.instagram.com/lindleylab/" target="_blank" rel="noopener noreferrer">Instagram ↗</a>
+            <a href="https://www.linkedin.com/company/lindley-lab/" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+            <a href="mailto:hello@lindleylab.co.uk">Email ↗</a>
+          </div>
+        </div>
+
+        <div>
+          <div class="footer-heading">LEGAL</div>
+          <div class="footer-links">
+            <a href="privacy.html">Privacy</a>
+            <a href="cookies.html">Cookies</a>
+            <a href="terms.html">Website Terms</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>© 2026 LINDLEY LAB</span>
+        <span>BRANDING &amp; DESIGN STUDIO / UK</span>
+      </div>
     </footer>
   </div>
 
