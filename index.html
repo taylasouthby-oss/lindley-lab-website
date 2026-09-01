@@ -6,13 +6,7 @@
 <title>Lindley Lab — Branding &amp; Design Studio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
-  <!--
-    COOKIE / TRACKING NOTE:
-    No non-essential analytics or advertising trackers are intentionally added here.
-    If analytics, advertising pixels or other non-essential tracking are introduced later,
-    add an appropriate consent-management solution BEFORE those scripts are allowed to run.
-  -->
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root{
     --black:#000000;
@@ -179,16 +173,14 @@
     margin:0;
     font-family:var(--serif);
     font-weight:400;
-    font-size:clamp(34px,6.2vw,88px);
-    line-height:1.04;
-    letter-spacing:-.01em;
-    max-width:1180px;
+    font-size:clamp(58px,9.2vw,148px);
+    line-height:.94;
+    letter-spacing:-.025em;
+    max-width:1380px;
   }
   .word-wrap{
     display:inline-block;
     white-space:nowrap;
-    overflow-wrap:normal;
-    word-break:normal;
     margin-right:.28em;
   }
   .letter{
@@ -199,11 +191,12 @@
     pointer-events:none; /* letters never intercept clicks meant for what's beneath them */
   }
   .support-copy{
-    margin:34px 0 0;
-    max-width:520px;
-    font-size:16px;
-    line-height:1.6;
-    color:var(--cream-dim);
+    margin:clamp(44px,6vw,82px) 0 0;
+    max-width:1050px;
+    font-size:clamp(24px,3.35vw,50px);
+    line-height:1.18;
+    letter-spacing:-.025em;
+    color:rgba(248,239,229,.58);
     font-family:var(--sans);
   }
 
@@ -257,10 +250,10 @@
     .playroom-egg .egg-sub{ font-size:7px; }
   }
 
-  /* ---- Selected work ---- */
+  /* ---- Selected work preview ---- */
   .work-section{
     background:var(--black);
-    padding:clamp(60px,8vw,90px) clamp(20px,6vw,64px);
+    padding:clamp(90px,11vw,150px) clamp(20px,6vw,64px) clamp(110px,14vw,190px);
   }
   .section-kicker{
     display:flex;
@@ -271,61 +264,122 @@
     color:var(--cream-dim);
     padding-bottom:18px;
     border-bottom:1px solid var(--cream-faint);
-    margin-bottom:clamp(40px,6vw,64px);
+    margin-bottom:clamp(40px,6vw,68px);
   }
-  .work-item{ margin-bottom:clamp(64px,10vw,110px); }
-  .work-item:last-child{ margin-bottom:0; }
-  .work-image{
-    width:100%;
-    aspect-ratio:16/9.4;
-    background:linear-gradient(160deg,#171717,#050505 60%);
-    position:relative;
-    overflow:hidden;
-    transition:transform .7s cubic-bezier(.16,1,.3,1);
+  .work-preview-head{
+    display:grid;
+    grid-template-columns:minmax(0,1.35fr) minmax(280px,.65fr);
+    gap:clamp(28px,6vw,90px);
+    align-items:end;
+    margin-bottom:clamp(46px,7vw,90px);
   }
-  /* replace background with: background-image:url('/project-mare.jpg'); etc. */
-  .work-image::after{
-    content:"";
-    position:absolute; inset:0;
-    background-image:linear-gradient(var(--cream-grid) 1px, transparent 1px), linear-gradient(90deg, var(--cream-grid) 1px, transparent 1px);
-    background-size:60px 60px;
-    opacity:.5;
-  }
-  .work-image .mark{
-    position:absolute;
-    font-family:var(--serif);
-    font-size:clamp(60px,9vw,160px);
-    color:var(--cream-faint);
-    top:50%; left:50%;
-    transform:translate(-50%,-50%);
-    letter-spacing:.02em;
-  }
-  .work-item:hover .work-image{ transform:scale(1.012); }
-  .work-caption{
-    display:flex;
-    justify-content:space-between;
-    align-items:baseline;
-    margin-top:20px;
-    gap:20px;
-    flex-wrap:wrap;
-  }
-  .work-caption .num{
-    font-family:var(--mono);
-    font-size:12px;
-    letter-spacing:.08em;
-    color:var(--cream-dim);
-  }
-  .work-caption h3{
+  .work-preview-head h2{
     margin:0;
     font-family:var(--serif);
     font-weight:400;
-    font-size:clamp(24px,3vw,36px);
+    font-size:clamp(62px,10.5vw,164px);
+    line-height:.87;
+    letter-spacing:-.035em;
   }
-  .work-caption .tag{
+  .work-preview-copy{
+    margin:0;
+    max-width:520px;
+    font-size:clamp(17px,1.65vw,25px);
+    line-height:1.42;
+    color:var(--cream-dim);
+  }
+  .work-reel{
+    position:relative;
+    width:100%;
+    aspect-ratio:16/9;
+    overflow:hidden;
+    background:#111;
+    isolation:isolate;
+  }
+  .work-reel-slide{
+    position:absolute;
+    inset:0;
+    opacity:0;
+    transform:scale(1.018);
+    transition:opacity 1.25s ease, transform 5.5s cubic-bezier(.16,1,.3,1);
+    pointer-events:none;
+  }
+  .work-reel-slide.is-active{
+    opacity:1;
+    transform:scale(1);
+    z-index:1;
+  }
+  .work-reel-slide img{
+    width:100%;
+    height:100%;
+    display:block;
+    object-fit:cover;
+  }
+  .work-reel::after{
+    content:"";
+    position:absolute;
+    inset:auto 0 0 0;
+    height:34%;
+    z-index:2;
+    pointer-events:none;
+    background:linear-gradient(to top,rgba(0,0,0,.6),rgba(0,0,0,0));
+  }
+  .work-reel-ui{
+    position:absolute;
+    z-index:3;
+    inset:auto 22px 20px 22px;
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    gap:24px;
+    font-family:var(--mono);
+    font-size:10px;
+    letter-spacing:.09em;
+  }
+  .work-reel-project{
+    display:flex;
+    flex-direction:column;
+    gap:5px;
+  }
+  .work-reel-project strong{
+    font:400 clamp(30px,4vw,58px)/.95 var(--serif);
+    letter-spacing:-.02em;
+  }
+  .work-reel-count{ color:rgba(248,239,229,.68); }
+  .work-preview-foot{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:28px;
+    padding-top:22px;
+  }
+  .work-preview-note{
+    max-width:540px;
+    margin:0;
+    color:var(--cream-dim);
+    line-height:1.6;
+    font-size:14px;
+  }
+  .work-link{
+    flex:none;
+    display:inline-flex;
+    align-items:center;
+    gap:12px;
+    color:var(--cream);
+    text-decoration:none;
     font-family:var(--mono);
     font-size:11px;
-    letter-spacing:.08em;
-    color:var(--cream-dim);
+    letter-spacing:.1em;
+    padding-bottom:5px;
+    border-bottom:1px solid currentColor;
+    transition:gap .25s ease, opacity .25s ease;
+  }
+  .work-link:hover{gap:18px;opacity:.7}
+  @media(max-width:760px){
+    .work-preview-head{grid-template-columns:1fr}
+    .work-reel{aspect-ratio:4/5}
+    .work-preview-foot{flex-direction:column}
+    .work-reel-ui{inset:auto 14px 14px 14px}
   }
 
   /* ---- Services ---- */
@@ -420,8 +474,6 @@
   }
   .contact-section h2{
     margin:0 auto;
-    overflow-wrap:normal;
-    word-break:normal;
     font-family:var(--serif);
     font-weight:400;
     font-size:clamp(38px,7vw,96px);
@@ -446,80 +498,17 @@
   .contact-cta:hover{ transform:scale(1.045); }
   .contact-cta .dot{ width:7px; height:7px; border-radius:50%; background:var(--lime); }
 
-  .contact-cta{
-    text-decoration:none;
-  }
-  .contact-cta:hover{
-    transform:translateY(-2px) scale(1.025);
-  }
-  .contact-cta:focus-visible{
-    outline:1px dashed var(--black);
-    outline-offset:6px;
-  }
-
-  footer.site-footer{
-    background:var(--black);
-    color:var(--cream);
-    padding:clamp(54px,7vw,86px) clamp(20px,6vw,64px) 28px;
+  footer{
+    background:var(--cream);
+    color:rgba(0,0,0,.5);
+    padding:26px clamp(20px,6vw,64px) 34px;
+    display:flex;
+    justify-content:space-between;
     font-family:var(--mono);
     font-size:10px;
     letter-spacing:.08em;
-  }
-  .footer-grid{
-    display:grid;
-    grid-template-columns:minmax(220px,1.4fr) repeat(3,minmax(130px,.7fr));
-    gap:clamp(30px,5vw,72px);
-    padding-bottom:clamp(46px,6vw,72px);
-  }
-  .footer-brand{
-    max-width:320px;
-  }
-  .footer-brand .footer-logo{
-    font-size:13px;
-    letter-spacing:.12em;
-    margin-bottom:16px;
-  }
-  .footer-brand .footer-tagline{
-    font-family:var(--serif);
-    font-weight:400;
-    font-size:clamp(28px,3vw,42px);
-    line-height:1.02;
-    letter-spacing:0;
-  }
-  .footer-heading{
-    color:var(--cream-dim);
-    margin-bottom:16px;
-  }
-  .footer-links{
-    display:flex;
-    flex-direction:column;
-    gap:10px;
-  }
-  .footer-links a{
-    color:var(--cream);
-    text-decoration:none;
-    width:max-content;
-    max-width:100%;
-  }
-  .footer-links a:hover{
-    color:var(--lime);
-  }
-  .footer-bottom{
-    border-top:1px solid var(--cream-faint);
-    padding-top:20px;
-    display:flex;
-    justify-content:space-between;
-    gap:16px;
     flex-wrap:wrap;
-    color:var(--cream-dim);
-  }
-  @media (max-width:840px){
-    .footer-grid{ grid-template-columns:1fr 1fr; }
-    .footer-brand{ grid-column:1 / -1; }
-  }
-  @media (max-width:520px){
-    .footer-grid{ grid-template-columns:1fr; }
-    .footer-brand{ grid-column:auto; }
+    gap:10px;
   }
 
   @media (prefers-reduced-motion: reduce){
@@ -567,47 +556,52 @@
     <!-- Magnetic banner -->
     <section class="magnetic-section">
       <div class="magnetic-stage">
-        <h1 class="magnetic-copy" id="magneticHeadline">We create brands that don't exist yet.</h1>
+        <h1 class="magnetic-copy" id="magneticHeadline">creating what isn’t.</h1>
         <a class="playroom-egg" id="playroomEgg" href="playroom.html" aria-label="Open Lindley Lab Playroom">
           <span class="egg-label">LL-EXP / 01</span>
           <span class="egg-sub">ENTER PLAYROOM</span>
         </a>
       </div>
-      <p class="support-copy">Lindley Lab is an independent branding and design studio creating bold identities, digital experiences and brand worlds for businesses that care about how they show up.</p>
+      <p class="support-copy">Lindley Lab is an independent branding and design studio. We create new identities, rethink existing ones and build the things that bring brands to life.</p>
     </section>
 
     <!-- Selected Work -->
     <section class="work-section" id="work">
       <div class="section-kicker">
-        <span>SELECTED WORK</span>
-        <span>LL-WRK / 001</span>
+        <span>LL-ARCHIVE / PREVIEW</span>
+        <span>003 EXPERIMENTS / 012 FRAMES</span>
       </div>
 
-      <div class="work-item">
-        <div class="work-image"><span class="mark">MARÉ</span></div>
-        <div class="work-caption">
-          <span class="num">01 / MARÉ</span>
-          <h3>A coastal skincare line, rebuilt from the tide up.</h3>
-          <span class="tag">BRAND IDENTITY + PACKAGING</span>
+      <div class="work-preview-head">
+        <h2>things we’ve made.</h2>
+        <p class="work-preview-copy">A moving glimpse of identities, ideas and experiments from the Lab. Some self-initiated, some made to test what could exist next.</p>
+      </div>
+
+      <div class="work-reel" id="workReel" aria-label="Preview of selected Lindley Lab work">
+        <figure class="work-reel-slide is-active" data-project="MARÉ" data-code="EXP-001"><img src="assets/work/mare-01-hero.jpg" alt="MARÉ Portuguese conservas packaging displayed in water" loading="eager"></figure>
+        <figure class="work-reel-slide" data-project="MARÉ" data-code="EXP-001"><img src="assets/work/mare-02.jpg" alt="MARÉ conservas tins arranged in a fishing net" loading="lazy"></figure>
+        <figure class="work-reel-slide" data-project="MARÉ" data-code="EXP-001"><img src="assets/work/mare-03.jpg" alt="MARÉ sardine tin styled on a tiled table" loading="lazy"></figure>
+        <figure class="work-reel-slide" data-project="MARÉ" data-code="EXP-001"><img src="assets/work/mare-04.jpg" alt="MARÉ three-flavour outer packaging" loading="lazy"></figure>
+        <figure class="work-reel-slide" data-project="MATIZ" data-code="EXP-002"><img src="assets/work/matiz-01-hero.jpg" alt="MATIZ handmade ceramics identity" loading="lazy"></figure>
+        <figure class="work-reel-slide" data-project="MATIZ" data-code="EXP-002"><img src="assets/work/matiz-02.jpg" alt="MATIZ ceramics shopfront" loading="lazy"></figure>
+        <figure class="work-reel-slide" data-project="MATIZ" data-code="EXP-002"><img src="assets/work/matiz-03.jpg" alt="MATIZ handmade ceramics business card" loading="lazy"></figure>
+        <figure class="work-reel-slide" data-project="MATIZ" data-code="EXP-002"><img src="assets/work/matiz-04.jpg" alt="MATIZ identity on a ceramicist apron" loading="lazy"></figure>
+        <figure class="work-reel-slide" data-project="BALNCE" data-code="EXP-003"><img src="assets/work/balnce-01-hero.jpg" alt="BALNCE dimensional studio signage" loading="lazy"></figure>
+        <figure class="work-reel-slide" data-project="BALNCE" data-code="EXP-003"><img src="assets/work/balnce-02.jpg" alt="BALNCE branded packaging" loading="lazy"></figure>
+        <figure class="work-reel-slide" data-project="BALNCE" data-code="EXP-003"><img src="assets/work/balnce-03.jpg" alt="BALNCE campaign on a digital screen" loading="lazy"></figure>
+        <figure class="work-reel-slide" data-project="BALNCE" data-code="EXP-003"><img src="assets/work/balnce-04.jpg" alt="BALNCE studio identity and movement photography" loading="lazy"></figure>
+        <div class="work-reel-ui" aria-hidden="true">
+          <div class="work-reel-project">
+            <span id="reelCode">EXP-001</span>
+            <strong id="reelProject">MARÉ</strong>
+          </div>
+          <span class="work-reel-count"><span id="reelCurrent">01</span> / 12</span>
         </div>
       </div>
 
-      <div class="work-item">
-        <div class="work-image"><span class="mark">ROAM</span></div>
-        <div class="work-caption">
-          <span class="num">02 / ROAM</span>
-          <h3>Wayfinding for a travel platform without a fixed address.</h3>
-          <span class="tag">BRAND IDENTITY + DIGITAL</span>
-        </div>
-      </div>
-
-      <div class="work-item">
-        <div class="work-image"><span class="mark">BALNCE</span></div>
-        <div class="work-caption">
-          <span class="num">03 / BALNCE</span>
-          <h3>A studio system for a wellness brand that dropped a vowel.</h3>
-          <span class="tag">BRAND IDENTITY + ART DIRECTION</span>
-        </div>
+      <div class="work-preview-foot">
+        <p class="work-preview-note">A few frames from the archive. The full projects live one click deeper.</p>
+        <a class="work-link" href="work.html">VIEW THE WORK <span>→</span></a>
       </div>
     </section>
 
@@ -621,22 +615,22 @@
       <div class="service-row">
         <span class="svc-num">01</span>
         <div>
-          <h3>Brand Identity</h3>
-          <p>Name, mark, system and voice — built from research into what a business actually is, not what a template says a business should look like.</p>
+          <h3>Give it something people remember.</h3>
+          <p>Brand identity, visual systems, typography, colour, art direction and the building blocks that make a brand recognisable.</p>
         </div>
       </div>
       <div class="service-row">
         <span class="svc-num">02</span>
         <div>
-          <h3>Brand In The World</h3>
-          <p>Packaging, environments, campaigns and the physical and digital touchpoints where a brand meets the people it's for.</p>
+          <h3>Make it work in the real world.</h3>
+          <p>Packaging, campaigns, print, environments and digital touchpoints designed to carry the brand beyond the logo.</p>
         </div>
       </div>
       <div class="service-row">
         <span class="svc-num">03</span>
         <div>
-          <h3>Ongoing Creative</h3>
-          <p>A standing studio relationship for teams that need a design partner on call — not a one-off deliverable.</p>
+          <h3>Keep it moving.</h3>
+          <p>Ongoing creative direction and design support for brands that need consistency, evolution and fresh thinking over time.</p>
         </div>
       </div>
     </section>
@@ -645,9 +639,9 @@
     <section class="studio-section" id="studio">
       <div>
         <div class="mono-label" style="margin-bottom:18px;">STUDIO</div>
-        <h2>We think great brands should feel like somebody made them, not like somebody assembled them.</h2>
+        <h2>The best work<br>starts with<br>a better question.</h2>
         <div class="studio-copy" style="margin-top:28px;">
-          <p>Lindley Lab is a small, independent studio. We work with a short list of clients at a time, on identities and experiences we'd want to see exist — treating every project as a working experiment rather than a finished formula.</p>
+          <p>We’re a small independent studio working closely with businesses to rethink, build and evolve their brands. We keep the process collaborative, exploratory and deliberately hands-on, because the best ideas rarely arrive fully formed.</p>
         </div>
       </div>
       <div class="studio-image"></div>
@@ -656,54 +650,13 @@
     <!-- Contact -->
     <section class="contact-section" id="contact">
       <div class="mono-label" style="margin-bottom:22px; color:rgba(0,0,0,.45);">START A PROJECT</div>
-      <h2>Let's create something that isn't.</h2>
-      <a class="contact-cta" href="start-a-project.html"><span class="dot"></span>START A PROJECT</a>
+      <h2>Let's make something that isn't.</h2>
+      <button class="contact-cta"><span class="dot"></span>START A PROJECT</button>
     </section>
 
-    <footer class="site-footer">
-      <div class="footer-grid">
-        <div class="footer-brand">
-          <div class="footer-logo">LINDLEY LAB</div>
-          <div class="footer-tagline">Creating what isn’t.</div>
-        </div>
-
-        <div>
-          <div class="footer-heading">EXPLORE</div>
-          <div class="footer-links">
-            <a href="#work">Work</a>
-            <a href="#services">Services</a>
-            <a href="#studio">Studio</a>
-            <a href="playroom.html">Playroom</a>
-            <a href="start-a-project.html">Start a Project</a>
-          </div>
-        </div>
-
-        <div>
-          <div class="footer-heading">CONNECT</div>
-          <div class="footer-links">
-            <!-- TODO: Replace # with the final Lindley Lab Instagram URL -->
-            <a href="#" target="_blank" rel="noopener noreferrer">Instagram ↗</a>
-            <!-- TODO: Replace # with the final Lindley Lab LinkedIn URL -->
-            <a href="#" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
-            <!-- TODO: Replace # with the final Lindley Lab email/mailto link -->
-            <a href="#">Email ↗</a>
-          </div>
-        </div>
-
-        <div>
-          <div class="footer-heading">LEGAL</div>
-          <div class="footer-links">
-            <a href="privacy.html">Privacy</a>
-            <a href="cookies.html">Cookies</a>
-            <a href="terms.html">Website Terms</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="footer-bottom">
-        <span>© 2026 LINDLEY LAB</span>
-        <span>BRANDING &amp; DESIGN STUDIO / UK</span>
-      </div>
+    <footer>
+      <span>LINDLEY LAB © 2026</span>
+      <span>LL-END / 001</span>
     </footer>
   </div>
 
@@ -1005,5 +958,45 @@
 
 })();
 </script>
+
+<script>
+(function(){
+  const reel = document.getElementById('workReel');
+  if(!reel) return;
+
+  const slides = Array.from(reel.querySelectorAll('.work-reel-slide'));
+  const project = document.getElementById('reelProject');
+  const code = document.getElementById('reelCode');
+  const current = document.getElementById('reelCurrent');
+  let index = 0;
+  let timer;
+
+  function show(next){
+    slides[index].classList.remove('is-active');
+    index = (next + slides.length) % slides.length;
+    slides[index].classList.add('is-active');
+    project.textContent = slides[index].dataset.project;
+    code.textContent = slides[index].dataset.code;
+    current.textContent = String(index + 1).padStart(2,'0');
+  }
+
+  function start(){
+    timer = setInterval(() => show(index + 1), 3400);
+  }
+
+  function stop(){
+    clearInterval(timer);
+  }
+
+  start();
+  reel.addEventListener('mouseenter', stop);
+  reel.addEventListener('mouseleave', start);
+  document.addEventListener('visibilitychange', () => {
+    if(document.hidden) stop();
+    else { stop(); start(); }
+  });
+})();
+</script>
+
 </body>
 </html>
