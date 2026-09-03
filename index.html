@@ -90,7 +90,7 @@
   }
 
   .enter-btn{
-    margin-top:56px;
+    margin-top:18px;
     background:var(--cream);
     color:var(--black);
     border:none;
@@ -112,11 +112,25 @@
     flex:none;
   }
 
-  .intro-hint{
-    position:absolute;
-    bottom:26px;
+  .logo-try-prompt{
+    margin-top:30px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:5px;
     letter-spacing:.1em;
     text-align:center;
+  }
+  .logo-try-arrow{
+    display:block;
+    font-size:16px;
+    line-height:1;
+    color:var(--cream);
+    animation:logoTryNudge 1.6s ease-in-out infinite;
+  }
+  @keyframes logoTryNudge{
+    0%,100%{ transform:translateY(0); }
+    50%{ transform:translateY(-3px); }
   }
 
   /* ============ NAV ============ */
@@ -562,6 +576,7 @@
   @media (prefers-reduced-motion: reduce){
     html{ scroll-behavior:auto; }
     #introGate, #mainSite, .enter-btn, .contact-cta{ transition:none !important; }
+    .logo-try-arrow{ animation:none !important; }
     .playroom-egg{ opacity:.32 !important; transform:translate(-50%,-50%) scale(1) !important; }
   }
 </style>
@@ -579,12 +594,15 @@
 
     <canvas id="dustCanvas"></canvas>
 
+    <div class="mono-label logo-try-prompt" aria-hidden="true">
+      <span class="logo-try-arrow">↑</span>
+      <span>TRY THE LOGO</span>
+    </div>
+
     <button class="enter-btn" id="enterBtn">
       <span class="dot"></span>
       ENTER THE LAB
     </button>
-
-    <div class="mono-label intro-hint">MOVE TO DISTURB &nbsp;·&nbsp; CLICK TO ENTER</div>
   </div>
 
   <!-- ============ NAV ============ -->
@@ -621,8 +639,8 @@
       </div>
 
       <div class="work-preview-head">
-        <h2>things we’ve made.</h2>
-        <p class="work-preview-copy">A moving glimpse of identities, ideas and experiments from the Lab. Some self-initiated, some made to test what could exist next.</p>
+        <h2>what we’ve made.</h2>
+        <p class="work-preview-copy">A glimpse of identities, ideas and experiments from the Lab. Some self-initiated, others exploring what could exist next.</p>
       </div>
 
       <div class="work-reel" id="workReel" aria-label="Preview of selected Lindley Lab work">
@@ -715,7 +733,6 @@
             <a href="#work">Work</a>
             <a href="#services">Services</a>
             <a href="#studio">Studio</a>
-            <a href="playroom.html">Playroom</a>
             <a href="start-a-project.html">Start a Project</a>
           </div>
         </div>
