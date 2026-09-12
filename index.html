@@ -584,7 +584,7 @@
     border:1px solid rgba(248,239,229,.18);
     border-radius:28px;
     padding:clamp(28px,3vw,38px);
-    min-height:660px;
+    min-height:590px;
     display:flex;
     flex-direction:column;
     background:
@@ -642,7 +642,7 @@
     margin:16px 0 28px;
     color:var(--cream-dim);
     line-height:1.6;
-    min-height:76px;
+    min-height:180px;
   }
   .price-zone{
     border-top:1px solid var(--cream-faint);
@@ -1073,6 +1073,14 @@
     max-width:980px;
     margin-top:clamp(48px,7vw,86px);
   }
+  .belief-title{
+    margin:0 0 clamp(34px,4vw,52px);
+    font-family:var(--serif);
+    font-weight:400;
+    font-size:clamp(48px,7.2vw,108px);
+    line-height:.92;
+    letter-spacing:-.035em;
+  }
   .belief-inner p{
     margin:0;
     font-family:var(--sans);
@@ -1087,6 +1095,8 @@
     color:var(--cream-dim);
   }
   @media(max-width:700px){
+    .package-sub{min-height:0;}
+    .belief-title{font-size:clamp(48px,14vw,72px);}
     .belief-inner{max-width:100%;}
     .belief-inner p{font-size:19px;line-height:1.55;}
   }
@@ -1198,7 +1208,9 @@
     <div class="nav-mark">LINDLEY LAB</div>
     <div class="nav-links">
       <a href="#work">OUR WORK</a>
-      <a href="#services">SERVICES</a>
+      <a href="#services">WHAT WE OFFER</a>
+      <a href="#belief">WHAT WE BELIEVE</a>
+      <a href="#pricing">PRICING &amp; PLANS</a>
       <a href="start-a-project.html">CONTACT US</a>
     </div>
       <button class="menu-toggle" id="menuToggle" aria-label="Open menu" aria-expanded="false"><span></span></button>
@@ -1208,7 +1220,7 @@
       <a href="#work">Our Work</a>
       <a href="#services">What We Offer</a>
       <a href="#belief">What We Believe</a>
-      <a href="#pricing">Pricing</a>
+      <a href="#pricing">Pricing &amp; Plans</a>
       <a class="mobile-contact" href="start-a-project.html">CONTACT US →</a>
     </nav>
   </div>
@@ -1238,7 +1250,7 @@
     <!-- Selected Work -->
     <section class="work-section" id="work">
       <div class="section-kicker">
-        <span>LL-ARCHIVE / PREVIEW</span>
+        <span>OUR WORK</span>
         <span>003 EXPERIMENTS / 012 FRAMES</span>
       </div>
 
@@ -1334,6 +1346,7 @@
         <span>THE LINDLEY LAB APPROACH</span>
       </div>
       <div class="belief-inner">
+        <h2 class="belief-title">what we believe.</h2>
         <p class="belief-lead">Lindley Lab represents experimentation, exploration, questioning what already exists and creating what doesn’t.</p>
         <p class="belief-copy">That’s how we believe great design should work. We want to work alongside businesses of any size that are ambitious enough to try something new, curious enough to see where an idea could go, and optimistic enough to believe in what they’re building.</p>
       </div>
@@ -1346,12 +1359,12 @@
         <div class="section-video-tint"></div>
       </div>
       <div class="section-kicker">
-        <span>WAYS TO WORK WITH US</span>
+        <span>PRICING &amp; PLANS</span>
         <span>PROJECT / SUPPORT / PARTNER</span>
       </div>
 
       <div class="pricing-head">
-        <h2>pricing and plans.</h2>
+        <h2>ways to work with us.</h2>
         <p>Whether you need one focused piece of work or a design partner in your corner every month, there’s a straightforward way to bring the Lab in.</p>
       </div>
 
@@ -1451,9 +1464,9 @@
           <div class="footer-heading">EXPLORE</div>
           <div class="footer-links">
             <a href="#work">Our Work</a>
-            <a href="#services">Services</a>
+            <a href="#services">What we offer</a>
             <a href="#belief">What we believe</a>
-            <a href="#pricing">Pricing</a>
+            <a href="#pricing">Pricing &amp; plans</a>
             <a href="start-a-project.html">Contact us</a>
           </div>
         </div>
