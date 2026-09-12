@@ -1125,6 +1125,47 @@
   @media(max-width:640px){
     .floating-work-cta{right:12px;bottom:12px;padding:12px 16px;font-size:10px;}
   }
+
+  /* ===== Hamburger menu ===== */
+  .menu-toggle{
+    display:none;
+    width:44px;height:44px;border-radius:999px;
+    border:1px solid rgba(248,239,229,.22);
+    background:rgba(12,12,12,.28);
+    backdrop-filter:blur(18px) saturate(130%);
+    -webkit-backdrop-filter:blur(18px) saturate(130%);
+    color:var(--cream);
+    align-items:center;justify-content:center;
+    position:relative;z-index:72;
+  }
+  .menu-toggle span,.menu-toggle::before,.menu-toggle::after{
+    content:"";position:absolute;width:17px;height:1px;background:currentColor;transition:.25s ease;
+  }
+  .menu-toggle::before{transform:translateY(-5px)}
+  .menu-toggle::after{transform:translateY(5px)}
+  .menu-toggle[aria-expanded="true"] span{opacity:0}
+  .menu-toggle[aria-expanded="true"]::before{transform:rotate(45deg)}
+  .menu-toggle[aria-expanded="true"]::after{transform:rotate(-45deg)}
+  .mobile-menu{
+    position:fixed;inset:0;z-index:68;
+    background:rgba(0,0,0,.76);
+    backdrop-filter:blur(28px) saturate(120%);
+    -webkit-backdrop-filter:blur(28px) saturate(120%);
+    opacity:0;pointer-events:none;transition:opacity .28s ease;
+    padding:110px clamp(24px,7vw,72px) 40px;
+  }
+  .mobile-menu.open{opacity:1;pointer-events:auto}
+  .mobile-menu nav{display:flex;flex-direction:column;gap:10px}
+  .mobile-menu a{
+    font-family:var(--serif);font-size:clamp(42px,10vw,78px);line-height:1.02;
+    text-decoration:none;color:var(--cream);padding:8px 0;border-bottom:1px solid rgba(248,239,229,.12);
+  }
+  .mobile-menu .mobile-contact{font-family:var(--mono);font-size:12px;letter-spacing:.12em;margin-top:26px;border:1px solid rgba(248,239,229,.22);border-radius:999px;padding:15px 20px;width:max-content}
+  @media (max-width:760px){
+    #siteNav .nav-links{display:none}
+    .menu-toggle{display:flex}
+  }
+
 </style>
 </head>
 <body>
@@ -1156,11 +1197,22 @@
   <nav id="siteNav">
     <div class="nav-mark">LINDLEY LAB</div>
     <div class="nav-links">
-      <a href="#work">WORK</a>
+      <a href="#work">OUR WORK</a>
       <a href="#services">SERVICES</a>
-      <a href="start-a-project.html">WORK WITH US</a>
+      <a href="start-a-project.html">CONTACT US</a>
     </div>
-  </nav>
+      <button class="menu-toggle" id="menuToggle" aria-label="Open menu" aria-expanded="false"><span></span></button>
+</nav>
+  <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+    <nav aria-label="Mobile navigation">
+      <a href="#work">Our Work</a>
+      <a href="#services">What We Offer</a>
+      <a href="#belief">What We Believe</a>
+      <a href="#pricing">Pricing</a>
+      <a class="mobile-contact" href="start-a-project.html">CONTACT US →</a>
+    </nav>
+  </div>
+
 
   <!-- ============ MAIN SITE ============ -->
   <div id="mainSite">
@@ -1398,12 +1450,11 @@
         <div>
           <div class="footer-heading">EXPLORE</div>
           <div class="footer-links">
-            <a href="#work">Work</a>
+            <a href="#work">Our Work</a>
             <a href="#services">Services</a>
-            <a href="#pricing">Pricing</a>
             <a href="#belief">What we believe</a>
-            <a href="playroom.html">Playroom</a>
-            <a href="start-a-project.html">Work with us</a>
+            <a href="#pricing">Pricing</a>
+            <a href="start-a-project.html">Contact us</a>
           </div>
         </div>
 
@@ -1870,6 +1921,21 @@
     }
   });
 })();
+
+  /* ===== Mobile menu ===== */
+  var menuToggle = document.getElementById("menuToggle");
+  var mobileMenu = document.getElementById("mobileMenu");
+  if (menuToggle && mobileMenu){
+    function setMenu(open){
+      menuToggle.setAttribute("aria-expanded", open ? "true" : "false");
+      mobileMenu.classList.toggle("open", open);
+      mobileMenu.setAttribute("aria-hidden", open ? "false" : "true");
+      document.body.style.overflow = open ? "hidden" : "";
+    }
+    menuToggle.addEventListener("click", function(){ setMenu(menuToggle.getAttribute("aria-expanded") !== "true"); });
+    mobileMenu.querySelectorAll("a").forEach(function(a){ a.addEventListener("click", function(){ setMenu(false); }); });
+    window.addEventListener("keydown", function(e){ if (e.key === "Escape") setMenu(false); });
+  }
 </script>
 </body>
 </html>
